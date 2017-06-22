@@ -1,0 +1,24 @@
+package org.nanotek.search;
+
+import java.util.concurrent.ExecutorService;
+
+/**
+ * A interface that defines how an Index of a generic type I will talk with the 
+ * other components of the system. Means that given an Index (which holds a configuration). 
+ * The application will return a specific object that will allow to perform queries on the 
+ * underlying database. 
+ * 
+ */
+
+
+
+import org.nanotek.Provider;
+import org.nanotek.lucene.index.Index;
+//import org.nanotek.cms.domain.lucene.config.Index;
+
+public interface SearcherProvider<I> extends Provider<I>{
+
+	public I getIndexSearcher(Index index);
+	public I getIndexSearcher(Index index, ExecutorService executorService);
+	
+}

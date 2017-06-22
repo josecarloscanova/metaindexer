@@ -1,0 +1,36 @@
+package org.nanotek.base;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.commons.beanutils.BeanUtils;
+import org.nanotek.Base;
+import org.nanotek.Mappable;
+/**
+ * 
+ * TODO:Implement resolution for nested/mapped properties. 
+ * 
+ * @author java-eclipse
+ *
+ * @param <T>
+ */
+public class MappableBase<T extends Base<?>> implements Mappable<T>{
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public <S extends Map<String, ?>> S getMap(T type) {
+		HashMap<String,String>  baseMap = new HashMap<String,String>();
+		try {
+			Field [] fields = type.getClass().getDeclaredFields();
+			for (Field field : fields) { 
+				baseMap.put(field.getName(), BeanUtils.getProperty(type, field.getName()));
+			}
+		} catch (IllegalAccessException | InvocationTargetException
+				| NoSuchMethodException e) {
+			e.printStackTrace();
+		}
+		return (S) baseMap;
+	}
+}
